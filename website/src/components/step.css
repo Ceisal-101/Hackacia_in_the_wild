@@ -1,0 +1,13 @@
+.step-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 10px; /* Distance from the bottom */
+  right: 10px; /* Adjust as needed */
+  padding: 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px); /* Blur effect */
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Transparent white */
+}

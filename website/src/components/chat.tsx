@@ -9,35 +9,23 @@ function Chat() {
   ]); // Holds the list of messages
   const [inputValue, setInputValue] = useState(''); // Holds the current value of the input field
 
-  const handleSend = () => {
-    if (!inputValue.trim()) return; // Prevent sending empty messages
-    setMessages([...messages, inputValue]); // Add the new message to the messages array
-    setInputValue(''); // Clear the input field
+  const sendMessage = () => {
+    if (inputValue.trim() !== '') {
+      setMessages([...messages, inputValue]);
+      setInputValue('');
+    }
   };
 
   return (
     <div className="chat-container">
-      {/* <div className="messages-container">
+      <div className="messages-container">
         {messages.map((message, index) => (
           <div key={index} className="message">
-            <span className="message-sender">GPT </span>
+            <span className="message-sender">{"GPT > "}</span>
             <span className="message-text">{message}</span>
           </div>
         ))}
-      </div> */}
-      
-      {/* <div className="input-container">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-          placeholder="Type a message..."
-        /> */}
-        {/* <button onClick={handleSend}>Next Step</button> */}
-      {/* </div> */}
+      </div>
     </div>
   );
-}
-
-export default Chat;
+} export default Chat;
