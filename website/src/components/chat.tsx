@@ -11,11 +11,12 @@ function Chat() {
 
   const sendMessage = () => {
     if (inputValue.trim() !== '') {
-      setMessages([...messages, inputValue]);
+      const updatedMessages = [...messages, inputValue].slice(-5); // Garde uniquement les 5 derniers messages
+      setMessages(updatedMessages);
       setInputValue('');
     }
   };
-
+  
   return (
     <div className="chat-container">
       <div className="messages-container">
