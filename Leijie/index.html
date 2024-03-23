@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Three.js et A-Frame AR Exemple</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Assurez-vous d'utiliser les bonnes versions pour ces bibliothèques -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <!-- Votre scène A-Frame va ici -->
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <!-- Définissez vos entités A-Frame ici -->
+
+        <!-- Exemple de marqueur Hiro -->
+        <a-marker preset="hiro">
+            <!-- Ajoutez vos objets 3D ici -->
+            <a-box position='0 0.5 0' material='color: green;'></a-box>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- Ici vous pouvez ajouter d'autres scripts liés à votre projet -->
+    <!-- Assurez-vous de ne pas avoir de déclarations 'import' si vous n'utilisez pas modules -->
+    <script>
+        // Votre code JavaScript allant interagir avec A-Frame et Three.js
+    </script>
+</body>
+</html>
