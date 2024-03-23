@@ -12,7 +12,7 @@ api_key= os.getenv("AZURE_OPENAI_API_KEY")
 deployment_name = 'gpt4-003'
 api_version = "2024-02-01" # this might change in the future
 
-image_url = local_image_to_data_url("/Users/ernestomendozagomez/Downloads/How-To-Solve-Chess-Puzzles.png")
+image_url = local_image_to_data_url("path_to_your_image")
 
 client = AzureOpenAI(
     api_key=api_key,  
