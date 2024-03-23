@@ -14,7 +14,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("assets/background.jpg"); /* Update with your image path */
+  /* background-image: url("assets/background.jpg"); Update with your image path */
   background-size: cover; /* Cover the entire page */
   background-position: center; /* Center the background image */
   filter: blur(8px);
