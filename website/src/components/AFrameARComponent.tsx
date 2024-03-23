@@ -3,22 +3,6 @@ import Chat from "./chat";
 import Step from "./step";
 
 const AFrameARComponent: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // Charger les scripts A-Frame et AR.js et initialiser la webcam
-    // Vous pouvez aussi initialiser votre vidéo ici si nécessaire
-  }, []);
-
-  useEffect(() => {
-    // Supposons que vous ayez une source vidéo à charger
-    const videoSource = "chemin/vers/votre/video.mp4";
-
-    if (videoRef.current) {
-      videoRef.current.src = videoSource;
-      videoRef.current.play();
-    }
-  }, []);
 
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>

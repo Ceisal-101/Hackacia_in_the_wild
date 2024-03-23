@@ -67,6 +67,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
+  max-height: 20%;
 }
 
 .app {
