@@ -73,10 +73,10 @@ function isThumbUp(landmarks : any) {
      document.body.removeChild(link);
    };
 
-   const capture = useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    saveImage(imageSrc, 'capture.png');
-  }, [webcamRef.current]);
+  //  const capture = useCallback(() => {
+  //   const imageSrc = webcamRef.current.getScreenshot();
+  //   saveImage(imageSrc, 'capture.png');
+  // }, [webcamRef.current]);
 
   const onResults = useCallback((results: Results) => {
     resultsRef.current = results;
@@ -95,7 +95,7 @@ function isThumbUp(landmarks : any) {
         console.log(thumbIsUp);
         if (thumbIsUp)
         {
-          capture();
+          // capture();
           onThumbUp()
         };
       }
@@ -106,7 +106,7 @@ function isThumbUp(landmarks : any) {
         console.log(thumbIsUp);
         if (thumbIsUp)
         {
-          capture();
+          // capture();
           onThumbUp()
         };
       }
@@ -221,7 +221,7 @@ function App() {
     const [i, setI] = useState(0);
 
     const incrementIndex = useCallback(() => {
-      if (i < 1)
+      if (i < 18)
       {
         console.log(i);
         setI(i => i + 1);

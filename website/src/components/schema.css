@@ -6,7 +6,7 @@
     height: 200px;
     bottom: 10px; /* Distance from the bottom */
     right: 10px; /* Adjust as needed */
-    padding: 40px;
+    padding: 1px;
     border-radius: 10px;
     backdrop-filter: blur(10px); /* Blur effect */
     -webkit-backdrop-filter: blur(10px); /* For Safari */
