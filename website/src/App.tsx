@@ -1,19 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Chat from './components/chat';
-import WebcamView from './components/webcam';
-import AFrameARComponent from './components/AFrameARComponent';
 import { useCallback, useEffect, useRef } from "react";
 import Webcam from "react-webcam";
 import { css } from "@emotion/css";
 import { Camera } from "@mediapipe/camera_utils";
 import { Hands, Results } from "@mediapipe/hands";
 import { drawCanvas } from "./utils/drawCanvas";
+import Schema from './components/schema';
+import Video from './components/video';
+import Step from './components/step';
+// import HandDetection from './components/handDetection';
 
-const HandDetection = () => {
-  const webcamRef = useRef<Webcam>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const resultsRef = useRef<Results>();
+function isThumbUp(landmarks : any) {
+   // Vérification pour chaque doigt spécifique (index, majeur, annulaire, auriculaire)
+   let thumbCmc = landmarks[1]; // Carpo-Métacarpienne (CMC) du pouce
+   let thumbMcp = landmarks[2]; // Métacarpo-Phalangienne (MCP) du pouce
+   let thumbIp = landmarks[3]; // Interphalangienne (IP) du pouce
+   let thumbTip = landmarks[4]; // Bout du pouce
+ 
+   // Landmarks des autres doigts
+   let indexFingerMcp = landmarks[5];
+   let middleFingerMcp = landmarks[9];
+   let ringFingerMcp = landmarks[13];
+   let pinkyMcp = landmarks[17];
+ 
+   // Bout des doigts pour vérifier s'ils sont pliés
+   let indexFingerTip = landmarks[8];
+   let middleFingerTip = landmarks[12];
+   let ringFingerTip = landmarks[16];
+   let pinkyTip = landmarks[20];
+ 
+   // Vérification si le pouce est étendu et orienté vers le haut
+   let thumbExtended = thumbMcp.y < thumbCmc.y && thumbTip.y < thumbIp.y;
+   let thumbOrientedUp = thumbTip.y < thumbCmc.y;
+ 
+   // Vérification si les autres doigts sont pliés (pas étendus)
+   let otherFingersNotExtended = (indexFingerTip.y > indexFingerMcp.y) &&
+                                 (middleFingerTip.y > middleFingerMcp.y) &&
+                                 (ringFingerTip.y > ringFingerMcp.y) &&
+                                 (pinkyTip.y > pinkyMcp.y);
+ 
+   // Pour un geste de pouce levé, le pouce doit être étendu et orienté vers le haut,
+   // et les autres doigts ne doivent pas être complètement étendus
+   if (thumbExtended && thumbOrientedUp && otherFingersNotExtended) {
+     return true;
+   }
+   return false;
+ }
+
+ function HandDetection({ onThumbUp } : any) {
+   const webcamRef = useRef<Webcam>(null);
+   const canvasRef = useRef<HTMLCanvasElement>(null);
+   const resultsRef = useRef<Results>();
+   
 
   const onResults = useCallback((results: Results) => {
     resultsRef.current = results;
@@ -21,6 +61,30 @@ const HandDetection = () => {
     const canvasCtx = canvasRef.current!.getContext("2d")!;
     drawCanvas(canvasCtx, results);
   }, []);
+
+  const OutputData = () => {
+    const results = resultsRef.current!;
+    // let thumbIsUp = isThumbUp(results.multiHandLandmarks[0]);
+    // console.log(thumbIsUp); // Affichera true si le pouce est en l'air, sinon false
+    if (results.multiHandedness.length === 1) {
+      if (results.multiHandedness[0].label === "Right") {
+        var thumbIsUp = isThumbUp(results.multiHandLandmarks[0]);
+        console.log(thumbIsUp);
+        if (thumbIsUp) onThumbUp();
+      }
+    }
+    else if (results.multiHandedness.length === 2) {
+      if (results.multiHandedness[1].label === "Right") {
+        var thumbIsUp = (isThumbUp(results.multiHandLandmarks[1]));
+        console.log(thumbIsUp);
+        if (thumbIsUp) onThumbUp();
+      }
+    }
+    // console.log(results);
+
+    // console.log(results);
+  };
+
 
   useEffect(() => {
     const hands = new Hands({
@@ -34,6 +98,8 @@ const HandDetection = () => {
       modelComplexity: 1,
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
+
+
     });
 
     hands.onResults(onResults);
@@ -51,12 +117,18 @@ const HandDetection = () => {
       });
       camera.start();
     }
-  }, [onResults]);
+    
+    const interval = setInterval(() => {
+      if (resultsRef.current) {
+        OutputData();
+      }
+    }, 2000);  // 1000 millisecondes = 1 seconde
 
-  const OutputData = () => {
-    const results = resultsRef.current!;
-    console.log(results);
-  };
+    // Nettoyage de l'effet
+    return () => clearInterval(interval);
+  }, [onResults, OutputData]);
+
+  
 
   return (
     <div className={styles.container}>
@@ -76,11 +148,6 @@ const HandDetection = () => {
         width={1280}
         height={720}
       />
-      <div className={styles.buttonContainer}>
-        <button className={styles.button} onClick={OutputData}>
-          Output Data
-        </button>
-      </div>
     </div>
   );
 };
@@ -100,8 +167,7 @@ const styles = {
   `,
   canvas: css`
     position: absolute;
-    width: 1280px;
-    height: 720px;
+    height: 100vh;
     background-color: #fff;
   `,
   buttonContainer: css`
@@ -121,12 +187,22 @@ const styles = {
 };
 
 function App() {
-  return (
-    <div className="app-container">
-      <HandDetection />
-      {/* <AFrameARComponent /> */}
-    </div>
-  );
+    const [i, setI] = useState(0);
+
+    const incrementIndex = useCallback(() => {
+      if (i < 1)
+      {
+        console.log(i);
+        setI(i => i + 1);
+      }
+    }, [i]);
+
+    return (
+        <div className="app-container">
+            <HandDetection onThumbUp={incrementIndex} />
+            <Step i={i} />
+        </div>
+    );
 }
 
 export default App;
