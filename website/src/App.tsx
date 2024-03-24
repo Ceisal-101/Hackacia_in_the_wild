@@ -49,11 +49,34 @@ function isThumbUp(landmarks : any) {
    return false;
  }
 
+
+ 
  function HandDetection({ onThumbUp } : any) {
    const webcamRef = useRef<Webcam>(null);
    const canvasRef = useRef<HTMLCanvasElement>(null);
    const resultsRef = useRef<Results>();
+
+   const saveImage = (imgSrc : string, fileName : string) => {
+     // Créer un élément <a> pour simuler un clic de téléchargement
+     const link = document.createElement('a');
+     link.href = imgSrc;
    
+     // Définir le nom du fichier téléchargé
+     link.download = fileName;
+   
+     // Simuler un clic sur le lien
+     // Cela déclenchera le téléchargement du fichier image
+     document.body.appendChild(link); // Ajouter le lien au document
+     link.click(); // Cliquer sur le lien
+   
+     // Nettoyage: retirer le lien du DOM
+     document.body.removeChild(link);
+   };
+
+   const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    saveImage(imageSrc, 'capture.png');
+  }, [webcamRef.current]);
 
   const onResults = useCallback((results: Results) => {
     resultsRef.current = results;
@@ -70,14 +93,22 @@ function isThumbUp(landmarks : any) {
       if (results.multiHandedness[0].label === "Right") {
         var thumbIsUp = isThumbUp(results.multiHandLandmarks[0]);
         console.log(thumbIsUp);
-        if (thumbIsUp) onThumbUp();
+        if (thumbIsUp)
+        {
+          capture();
+          onThumbUp()
+        };
       }
     }
     else if (results.multiHandedness.length === 2) {
       if (results.multiHandedness[1].label === "Right") {
         var thumbIsUp = (isThumbUp(results.multiHandLandmarks[1]));
         console.log(thumbIsUp);
-        if (thumbIsUp) onThumbUp();
+        if (thumbIsUp)
+        {
+          capture();
+          onThumbUp()
+        };
       }
     }
     // console.log(results);
