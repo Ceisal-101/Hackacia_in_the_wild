@@ -5,7 +5,7 @@ function Chat() {
   const [messages, setMessages] = useState([
     'Hello! How can I help you today?',
     'I would like to know more about your products.',
-    'Sure! What would you like to know?'
+    'Sure! What would you like to know??????????????????????????????????????'
   ]); // Holds the list of messages
   const [inputValue, setInputValue] = useState(''); // Holds the current value of the input field
 

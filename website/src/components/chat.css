@@ -1,13 +1,14 @@
 .chat-container {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   position: absolute;
   bottom: 10px; /* Distance from the bottom */
   left: 10px; /* Adjust as needed */
   padding: 20px;
+  max-width: 30vw; /* Largeur maximale de 30% de la largeur de la fenêtre */
   border-radius: 10px;
   backdrop-filter: blur(10px); /* Blur effect */
-  border-radius: 10px;
   -webkit-backdrop-filter: blur(10px); /* For Safari */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Transparent white */
 }
@@ -22,6 +23,7 @@
 .message {
   margin-bottom: 5px;
   border-radius: 5px;
+  word-wrap: break-word; /* Assure que les longs mots ne débordent pas */
 }
 
 .input-container {
@@ -52,6 +54,8 @@
 }
 
 .message-text {
+  white-space: pre-wrap; /* Garde les sauts de ligne et espaces comme dans le texte original */
+  overflow-wrap: break-word; /* Casse les mots trop longs pour s'adapter au conteneur */
   margin-bottom: 5px;
 }
 
