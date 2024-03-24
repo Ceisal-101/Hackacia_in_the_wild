@@ -221,7 +221,7 @@ function App() {
     const [i, setI] = useState(0);
 
     const incrementIndex = useCallback(() => {
-      if (i < 18)
+      if (i < 13)
       {
         console.log(i);
         setI(i => i + 1);
